@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace DataCollector
 {
@@ -26,17 +27,20 @@ namespace DataCollector
             this.mostRecentMeasure = 0;
         }// may want to use setter getter format*/
 
+        //Property for unitsToUse
         UnitsEnumeration UnitsToUse
         {
             get => this.unitsToUse;
             set => this.unitsToUse = value;
         }
 
+        //Return the contents of the dataCapturedarray.
         public int[] GetRawData()
         {
             throw new NotImplementedException();
         }
 
+        //Return the current value from mostRecentMeasure- convert it if unitsToUse is not Imperial.
         public double ImperialValue(double capturedValue)
         {
             double convertedValue = capturedValue;
@@ -48,6 +52,7 @@ namespace DataCollector
             return convertedValue;
         }
 
+        //Return the current value from mostRecentMeasure- convert it if unitsToUse is not Metric.
         public double MetricValue(double capturedValue)
         {
             double convertedValue = capturedValue;
@@ -59,11 +64,19 @@ namespace DataCollector
             return convertedValue;
         }
 
+        /*Start timer to collect data from Device.GetMeasurement() every 15 seconds,
+        set the value to mostRecentMeasure and store it to dataCaptured array.*/
         public void StartCollecting()
         {
-            throw new NotImplementedException();
+            Timer timer;
+
+            //Create timer object
+            timer = new Timer(timer_Tick, null, (int)TimeSpan.FromSeconds(1).TotalMilliseconds, (int)TimeSpan.FromSeconds(15).TotalMilliseconds);
+
+            //tick handler and getMeasure ? this would need to be a method called in device?
         }
 
+        //Stop the timer that started in StartCollecting().
         public void StopCollecting()
         {
             throw new NotImplementedException();
