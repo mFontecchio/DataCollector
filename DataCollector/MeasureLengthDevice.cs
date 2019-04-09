@@ -68,10 +68,10 @@ namespace DataCollector
         set the value to mostRecentMeasure and store it to dataCaptured array.*/
         public void StartCollecting()
         {
-            Timer timer;
+            //Timer timer;
 
             //Create timer object
-            timer = new Timer(timer_Tick, null, (int)TimeSpan.FromSeconds(1).TotalMilliseconds, (int)TimeSpan.FromSeconds(15).TotalMilliseconds);
+            //timer = new Timer(timer_Tick, null, (int)TimeSpan.FromSeconds(1).TotalMilliseconds, (int)TimeSpan.FromSeconds(15).TotalMilliseconds);
 
             //tick handler and getMeasure ? this would need to be a method called in device?
         }
