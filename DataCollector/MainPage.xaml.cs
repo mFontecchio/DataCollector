@@ -31,6 +31,9 @@ namespace DataCollector
             this.InitializeComponent();
 
             newDevice = new MeasureLengthDevice();
+
+            //Initialize RadioButton DefaultCheck
+            this.metricRadioButton.IsChecked = true;
         }
 
 
@@ -55,6 +58,27 @@ namespace DataCollector
             //Time since last tick should be very very close to Interval
             DataContext = null;
             DataContext = this.newDevice;
+
+            measureListView.Items.Clear();
+            int[] history = newDevice.GetRawData();
+
+            for (int i = history.Length - 1; i >= 0; i--)
+            {
+                if (history[i] != 0)
+                {
+                    measureListView.Items.Add(history[i]);
+                }
+            }
+        }
+
+        private void MetricRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.newDevice.UnitsToUse = Units.Metric;
+        }
+
+        private void ImperialRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.newDevice.UnitsToUse = Units.Imperial;
         }
     }
 }

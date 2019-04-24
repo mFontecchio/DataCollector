@@ -16,51 +16,63 @@ namespace DataCollector
         private int mostRecentMeasure;          //This field will store the most recent measurement captured for convenience of display
         private Timer timer;
         private string timeStamp;
+        private int queueCount;
+        private decimal convertedValue;
 
         public MeasureLengthDevice()
         {
-            this.unitsToUse = Units.Imperial;
-            this.dataCaptured = new int[0];
+            this.unitsToUse = Units.Metric;
+            this.dataCaptured = new int[10];
             this.mostRecentMeasure = 0;
             this.timer = null;
             this.timeStamp = null;
+            this.queueCount = 0;
+            this.convertedValue = 0;
         }
-        
-        //Set EnumUnits
-        Units UnitsToUse {get; set;}
+
+        //Property for unitsToUse
+        public Units UnitsToUse
+        {
+            get => this.unitsToUse;
+            set => this.unitsToUse = value;
+        }
 
         public int MostRecentMeasure {get; set;}
 
         public string TimeStamp {get; set;}
 
+        public int QueueCount { get; }
+
+        public decimal ConvertedValue { get; set; }
+
         //Return the contents of the dataCapturedarray.
         public int[] GetRawData()
         {
-            throw new NotImplementedException();
+            return this.dataCaptured;
         }
 
         //Return the current value from mostRecentMeasure- convert it if unitsToUse is not Imperial.
-        public double ImperialValue(double capturedValue)
+        public decimal ImperialValue(decimal capturedValue)
         {
-            double convertedValue = capturedValue;
+            decimal newValue = capturedValue;
 
             if (this.unitsToUse != Units.Imperial)
             {
-                convertedValue = convertedValue * 0.3937;
+                newValue *= 0.3937m;
             }
-            return convertedValue;
+            return newValue;
         }
 
         //Return the current value from mostRecentMeasure- convert it if unitsToUse is not Metric.
-        public double MetricValue(double capturedValue)
+        public decimal MetricValue(decimal capturedValue)
         {
-            double convertedValue = capturedValue;
+            decimal newValue = capturedValue;
 
             if (this.unitsToUse != Units.Metric)
             {
-                convertedValue = convertedValue * 2.54;
+                newValue *= 2.54m;
             }
-            return convertedValue;
+            return newValue;
         }
 
         /*Start timer to collect data from Device.GetMeasurement() every 15 seconds,
@@ -77,6 +89,19 @@ namespace DataCollector
             () => {
                 this.MostRecentMeasure = this.GetMeasurement();
                 this.TimeStamp = GetTimeStamp(DateTime.Now);
+
+                //ConvertValue
+                if (this.UnitsToUse == Units.Metric)
+                {
+                    this.ConvertedValue = this.ImperialValue(this.MostRecentMeasure);
+                }
+                else
+                {
+                    this.ConvertedValue = this.MetricValue(this.MostRecentMeasure);
+                }
+
+                //Method to store and continually populate the array with current measurements
+                StoreHistory(this.MostRecentMeasure);
             });
         }
 
@@ -90,6 +115,31 @@ namespace DataCollector
         private static String GetTimeStamp(DateTime date)
         {
             return date.ToString("MM/dd/yyyy hh:mm:ss tt");
+        }
+
+        //Store DataCaptured array
+        //This will write until the array is full. 
+        //Upon a full array it will then shift all values down 1 index and overwrite index 9 or the max index.
+        private void StoreHistory(int measurement)
+        {
+            if (this.queueCount < 10)
+            {
+                this.dataCaptured[this.queueCount] = measurement;
+                this.queueCount++;
+
+            }
+
+            if (this.queueCount >= 10)
+            {
+                for (int i = 0; i < this.dataCaptured.Length - 1; i++)
+                {
+                    if (i < this.dataCaptured.Length - 1)
+                    {
+                        this.dataCaptured[i] = this.dataCaptured[i + 1];
+                    }
+                }
+                this.dataCaptured[dataCaptured.Length - 1] = measurement;
+            }
         }
     }
 }
