@@ -9,6 +9,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <TextBlock x:Name="dataTest" HorizontalAlignment="Left" Margin="158,130,0,0" Text="{Binding MostRecentMeasure}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button x:Name="start" Content="Start" HorizontalAlignment="Left" Margin="28,53,0,0" VerticalAlignment="Top" Click="Start_Click"/>
+        <Button x:Name="stop" Content="Stop" HorizontalAlignment="Left" Margin="28,114,0,0" VerticalAlignment="Top" Click="Stop_Click"/>
+        <TextBlock x:Name="timeStamp" HorizontalAlignment="Left" Margin="158,53,0,0" Text="{Binding TimeStamp}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="convertedMeasurement" HorizontalAlignment="Left" Margin="445,57,0,0" Text="Converted" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 </Page>

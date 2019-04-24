@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace DataCollector
 {
-    public enum UnitsEnumeration { Metric, Imperial}
+    public enum Units { Metric, Imperial}
 }

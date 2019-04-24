@@ -4,35 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace DataCollector
 {
     class MeasureLengthDevice : Device, IMeasuringDevice
     {
-        private UnitsEnumeration unitsToUse;    //Units - This field will determine whether the generated measurements are metric or imperial. Its value will be determined from user input.
+        private Units unitsToUse;    //Units - This field will determine whether the generated measurements are metric or imperial. Its value will be determined from user input.
         private int[] dataCaptured;             //This field will store a history of a limited set of recently captured measurements. Once the array is full, the class should start overwriting the oldest elements while continuing to record the newest captures.
         private int mostRecentMeasure;          //This field will store the most recent measurement captured for convenience of display
+        private Timer timer;
+        private string timeStamp;
 
         public MeasureLengthDevice()
         {
-            this.unitsToUse = UnitsEnumeration.Imperial;
+            this.unitsToUse = Units.Imperial;
             this.dataCaptured = new int[0];
             this.mostRecentMeasure = 0;
+            this.timer = null;
+            this.timeStamp = null;
         }
+        
+        //Set EnumUnits
+        Units UnitsToUse {get; set;}
 
-        /*public MeasureLengthDevice(UnitsEnumeration unitsToUse)
-        {
-            this.unitsToUse = unitsToUse;
-            this.dataCaptured = new int[0];
-            this.mostRecentMeasure = 0;
-        }// may want to use setter getter format*/
+        public int MostRecentMeasure {get; set;}
 
-        //Property for unitsToUse
-        UnitsEnumeration UnitsToUse
-        {
-            get => this.unitsToUse;
-            set => this.unitsToUse = value;
-        }
+        public string TimeStamp {get; set;}
 
         //Return the contents of the dataCapturedarray.
         public int[] GetRawData()
@@ -45,7 +44,7 @@ namespace DataCollector
         {
             double convertedValue = capturedValue;
 
-            if (this.unitsToUse != UnitsEnumeration.Imperial)
+            if (this.unitsToUse != Units.Imperial)
             {
                 convertedValue = convertedValue * 0.3937;
             }
@@ -57,7 +56,7 @@ namespace DataCollector
         {
             double convertedValue = capturedValue;
 
-            if (this.unitsToUse != UnitsEnumeration.Metric)
+            if (this.unitsToUse != Units.Metric)
             {
                 convertedValue = convertedValue * 2.54;
             }
@@ -68,18 +67,29 @@ namespace DataCollector
         set the value to mostRecentMeasure and store it to dataCaptured array.*/
         public void StartCollecting()
         {
-            //Timer timer;
+            timer = new Timer(Tick, null, (int)TimeSpan.FromSeconds(1).TotalMilliseconds, (int)TimeSpan.FromSeconds(1).TotalMilliseconds);
+        }
 
-            //Create timer object
-            //timer = new Timer(timer_Tick, null, (int)TimeSpan.FromSeconds(1).TotalMilliseconds, (int)TimeSpan.FromSeconds(15).TotalMilliseconds);
-
-            //tick handler and getMeasure ? this would need to be a method called in device?
+        private async void Tick(object state)
+        {
+            //code to randomly generate a new value and update GetMeasurement
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+            () => {
+                this.MostRecentMeasure = this.GetMeasurement();
+                this.TimeStamp = GetTimeStamp(DateTime.Now);
+            });
         }
 
         //Stop the timer that started in StartCollecting().
         public void StopCollecting()
         {
-            throw new NotImplementedException();
+            this.timer.Dispose();
+        }
+
+        //Generate String Timestamp to display in textblock
+        private static String GetTimeStamp(DateTime date)
+        {
+            return date.ToString("MM/dd/yyyy hh:mm:ss tt");
         }
     }
 }
