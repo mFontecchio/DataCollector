@@ -9,14 +9,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button x:Name="start" Content="Start" HorizontalAlignment="Left" Margin="28,53,0,0" VerticalAlignment="Top" Click="Start_Click"/>
-        <Button x:Name="stop" Content="Stop" HorizontalAlignment="Left" Margin="28,114,0,0" VerticalAlignment="Top" Click="Stop_Click"/>
-        <TextBlock x:Name="timeStamp" HorizontalAlignment="Left" Margin="158,53,0,0" Text="{Binding TimeStamp}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock x:Name="convertedMeasurement" HorizontalAlignment="Left" Margin="445,57,0,0" Text="{Binding ConvertedValue}" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <RadioButton x:Name="metricRadioButton" Content="Metric" HorizontalAlignment="Left" Margin="28,174,0,0" VerticalAlignment="Top" GroupName="Units" Checked="MetricRadioButton_Checked"/>
-        <ListView x:Name="measureListView" HorizontalAlignment="Left" Height="466" Margin="146,117,0,0" VerticalAlignment="Top" Width="100"/>
-        <RadioButton x:Name="imperialRadioButton" Content="Imperial" HorizontalAlignment="Left" Margin="28,211,0,0" VerticalAlignment="Top" GroupName="Units" Checked="ImperialRadioButton_Checked"/>
-        <TextBlock x:Name="dataTest" HorizontalAlignment="Left" Margin="158,130,0,0" Text="{Binding MostRecentMeasure}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Rectangle HorizontalAlignment="Left" Height="198" Margin="18,26,0,0" VerticalAlignment="Top" Width="125" Stroke="White"/>
+
+        <TextBlock x:Name="timeStamp" HorizontalAlignment="Left" Margin="173,26,0,0" Text="{Binding TimeStamp}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
+        <RadioButton x:Name="metricRadioButton" Content="Metric (cm)" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top" GroupName="Units" Checked="MetricRadioButton_Checked"/>
+        <RadioButton x:Name="imperialRadioButton" Content="Imperial (in)" HorizontalAlignment="Left" Margin="28,125,0,0" VerticalAlignment="Top" GroupName="Units" Checked="ImperialRadioButton_Checked"/>
+        <ListView x:Name="measureListView" HorizontalAlignment="Left" Height="466" Margin="146,117,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed" />
+        <TextBlock x:Name="historyTextblock" HorizontalAlignment="Left" Margin="28,254,0,0" Text="{Binding ForamattedHistory}" TextWrapping="Wrap" VerticalAlignment="Top" RequestedTheme="Default" FocusVisualPrimaryBrush="White" Visibility="Collapsed"/>
+        <ToggleButton x:Name="startStopToggle" Content="Start" HorizontalAlignment="Left" Margin="28,35,0,0" VerticalAlignment="Top" Checked="StartStopToggle_Checked" Unchecked="StartStopToggle_Unchecked"/>
+        <ToggleButton x:Name="historyToggle" Content="View History" HorizontalAlignment="Left" Margin="28,183,0,0" VerticalAlignment="Top" Checked="HistoryToggle_Checked" Unchecked="HistoryToggle_Unchecked"/>
+        <Grid HorizontalAlignment="Left" Height="45" Margin="173,141,0,0" VerticalAlignment="Top" Width="171">
+            <TextBlock x:Name="convertedMeasurement" HorizontalAlignment="Left" Margin="0,25,0,0" Text="{Binding ConvertedValue}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="unitsConvertedTextBlock" HorizontalAlignment="Left" Margin="100,25,0,0" Text="{Binding UnitsConverted}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="convertLabel" HorizontalAlignment="Left" Text="Converted Measurement" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
+        </Grid>
+        <Grid HorizontalAlignment="Left" Height="45" Margin="173,63,0,0" VerticalAlignment="Top" Width="202">
+            <TextBlock x:Name="mostRecentMeasure" HorizontalAlignment="Left" Margin="0,25,0,0" Text="{Binding MostRecentMeasure}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="unitsUsedTextBlock" HorizontalAlignment="Left" Margin="100,25,0,0" Text="{Binding UnitsUsed}" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBlock x:Name="recentMeasureLabel" HorizontalAlignment="Left" Text="Current Measurement" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
+
+        </Grid>
 
     </Grid>
 </Page>

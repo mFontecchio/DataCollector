@@ -59,7 +59,7 @@ namespace DataCollector
             DataContext = null;
             DataContext = this.newDevice;
 
-            measureListView.Items.Clear();
+            /*measureListView.Items.Clear();
             int[] history = newDevice.GetRawData();
 
             for (int i = history.Length - 1; i >= 0; i--)
@@ -68,7 +68,7 @@ namespace DataCollector
                 {
                     measureListView.Items.Add(history[i]);
                 }
-            }
+            }*/
         }
 
         private void MetricRadioButton_Checked(object sender, RoutedEventArgs e)
@@ -79,6 +79,41 @@ namespace DataCollector
         private void ImperialRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             this.newDevice.UnitsToUse = Units.Imperial;
+        }
+
+        private void HistoryToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            //measureListView.Visibility = Visibility.Visible;
+            historyTextblock.Visibility = Visibility.Visible;
+
+            historyToggle.Content = "Hide History";
+        }
+
+        private void HistoryToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            //measureListView.Visibility = Visibility.Collapsed;
+            historyTextblock.Visibility = Visibility.Collapsed;
+
+            historyToggle.Content = "View History";
+        }
+
+        private void StartStopToggle_Checked(object sender, RoutedEventArgs e)
+        {
+            newDevice.StartCollecting();
+            timer = new DispatcherTimer();
+            timer.Tick += timer_Tick;
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
+
+            startStopToggle.Content = "Stop";
+        }
+
+        private void StartStopToggle_Unchecked(object sender, RoutedEventArgs e)
+        {
+            newDevice.StopCollecting();
+            timer.Stop();
+
+            startStopToggle.Content = "Start";
         }
     }
 }
