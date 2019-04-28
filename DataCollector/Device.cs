@@ -11,8 +11,6 @@ namespace DataCollector
 {
     class Device
     {
-        //private Timer timer;
-        //private int recentMeassurement;
 
         //This method will return a random integer between 1 and 10 as a measurement of some imaginary object
         public int GetMeasurement()

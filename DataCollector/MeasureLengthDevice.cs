@@ -12,10 +12,11 @@ namespace DataCollector
     class MeasureLengthDevice : Device, IMeasuringDevice
     {
         //**FIELDS**\\
+        //Fields outlined in instructions
         private Units unitsToUse;               //Units - This field will determine whether the generated measurements are metric or imperial. Its value will be determined from user input.
         private int[] dataCaptured;             //This field will store a history of a limited set of recently captured measurements. Once the array is full, the class should start overwriting the oldest elements while continuing to record the newest captures.
         private int mostRecentMeasure;          //This field will store the most recent measurement captured for convenience of display
-        //
+        //Additional Fields
         private Timer timer;
         private decimal convertedValue;
         private int queueCount;
@@ -44,7 +45,7 @@ namespace DataCollector
         //**CONSTRUCTORS**\\
         public MeasureLengthDevice()
         {
-            this.UnitsToUse = Units.Metric;
+            this.UnitsToUse = Units.Imperial;
             this.dataCaptured = new int[10];
             this.mostRecentMeasure = 0;
             this.timer = null;
@@ -71,6 +72,7 @@ namespace DataCollector
             if (this.UnitsToUse != Units.Imperial)
             {
                 newValue *= 0.3937m;
+                //Assign units for measurement and conversion
                 UnitsUsed = "cm";
                 UnitsConverted = "in";
             }
@@ -85,6 +87,7 @@ namespace DataCollector
             if (this.UnitsToUse != Units.Metric)
             {
                 newValue *= 2.54m;
+                //Assign units for measurement and conversion
                 UnitsUsed = "in";
                 UnitsConverted = "cm";
             }
@@ -109,24 +112,25 @@ namespace DataCollector
         //Store DataCaptured array
         //This will write until the array is full. 
         //Upon a full array it will then shift all values down 1 index and overwrite index 9 or the max index.
+        //Do the same for history string of converted measurement, units and timestamps.
         private void StoreHistory(int measurement)
         {
             if (this.queueCount < 10)
             {
-                this.dataCaptured[this.queueCount] = measurement;
-                this.collectedHistory[this.queueCount] = $" {UnitsUsed}\t\t{ConvertedValue} {UnitsConverted}\t\t\t{TimeStamp}";
+                this.dataCaptured[queueCount] = measurement;
+                this.collectedHistory[queueCount] = $" {UnitsUsed}\t\t{ConvertedValue} {UnitsConverted}\t\t\t{TimeStamp}";
                 this.queueCount++;
 
             }
 
             if (this.queueCount >= 10)
             {
-                for (int i = 0; i < this.dataCaptured.Length - 1; i++)
+                for (int i = 0; i < dataCaptured.Length - 1; i++)
                 {
-                    if (i < this.dataCaptured.Length - 1)
+                    if (i < dataCaptured.Length - 1)
                     {
-                        this.dataCaptured[i] = this.dataCaptured[i + 1];
-                        this.collectedHistory[i] = this.collectedHistory[i + 1];
+                        this.dataCaptured[i] = dataCaptured[i + 1];
+                        this.collectedHistory[i] = collectedHistory[i + 1];
                     }
                 }
                 this.dataCaptured[dataCaptured.Length - 1] = measurement;
@@ -166,10 +170,11 @@ namespace DataCollector
 
         //Create History string with measurements, units and timestamps.
         public string PrintValues(int[] dataCaptured)
-        { //code to return history from ConcurrentQueue
+        {
             StringBuilder myString = new StringBuilder();
             myString.AppendLine($"Device\t\tConverted Units\t\tTimestamp");
             for (int i = dataCaptured.Length - 1; i >= 0; i--)
+                //Do not display 0's, these are place holders from when array is created not actual measurements.
                 if (dataCaptured[i] != 0)
                 {
                     myString.AppendLine($"{dataCaptured[i].ToString()}{collectedHistory[i]}");

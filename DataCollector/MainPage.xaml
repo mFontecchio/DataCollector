@@ -9,21 +9,22 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Rectangle HorizontalAlignment="Left" Height="198" Margin="18,26,0,0" VerticalAlignment="Top" Width="125" Stroke="White"/>
+        <Rectangle x:Name="border" HorizontalAlignment="Left" Height="223" Margin="18,26,0,0" VerticalAlignment="Top" Width="125" Stroke="White"/>
 
         <TextBlock x:Name="timeStamp" HorizontalAlignment="Left" Margin="173,26,0,0" Text="{Binding TimeStamp}" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
         <RadioButton x:Name="metricRadioButton" Content="Metric (cm)" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top" GroupName="Units" Checked="MetricRadioButton_Checked"/>
         <RadioButton x:Name="imperialRadioButton" Content="Imperial (in)" HorizontalAlignment="Left" Margin="28,125,0,0" VerticalAlignment="Top" GroupName="Units" Checked="ImperialRadioButton_Checked"/>
         <ListView x:Name="measureListView" HorizontalAlignment="Left" Height="466" Margin="146,117,0,0" VerticalAlignment="Top" Width="100" Visibility="Collapsed" />
-        <TextBlock x:Name="historyTextblock" HorizontalAlignment="Left" Margin="28,254,0,0" Text="{Binding ForamattedHistory}" TextWrapping="Wrap" VerticalAlignment="Top" RequestedTheme="Default" FocusVisualPrimaryBrush="White" Visibility="Collapsed"/>
+        <TextBlock x:Name="historyTextblock" HorizontalAlignment="Left" Margin="28,260,0,0" Text="{Binding ForamattedHistory}" TextWrapping="Wrap" VerticalAlignment="Top" RequestedTheme="Default" FocusVisualPrimaryBrush="White" Visibility="Collapsed"/>
         <ToggleButton x:Name="startStopToggle" Content="Start" HorizontalAlignment="Left" Margin="28,35,0,0" VerticalAlignment="Top" Checked="StartStopToggle_Checked" Unchecked="StartStopToggle_Unchecked"/>
-        <ToggleButton x:Name="historyToggle" Content="View History" HorizontalAlignment="Left" Margin="28,183,0,0" VerticalAlignment="Top" Checked="HistoryToggle_Checked" Unchecked="HistoryToggle_Unchecked"/>
-        <Grid HorizontalAlignment="Left" Height="45" Margin="173,141,0,0" VerticalAlignment="Top" Width="171">
+        <ToggleButton x:Name="viewHideConvert" Content="View Conversion" HorizontalAlignment="Left" Margin="28,164,0,0" VerticalAlignment="Top" Width="103" FontSize="11" Checked="ViewHideConvert_Checked" Unchecked="ViewHideConvert_Unchecked"/>
+        <ToggleButton x:Name="historyToggle" Content="View History" HorizontalAlignment="Left" Margin="28,207,0,0" VerticalAlignment="Top" Checked="HistoryToggle_Checked" Unchecked="HistoryToggle_Unchecked"/>
+        <Grid x:Name="convertedGrid" HorizontalAlignment="Left" Height="45" Margin="173,141,0,0" VerticalAlignment="Top" Width="171" Visibility="Collapsed">
             <TextBlock x:Name="convertedMeasurement" HorizontalAlignment="Left" Margin="0,25,0,0" Text="{Binding ConvertedValue}" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBlock x:Name="unitsConvertedTextBlock" HorizontalAlignment="Left" Margin="100,25,0,0" Text="{Binding UnitsConverted}" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBlock x:Name="convertLabel" HorizontalAlignment="Left" Text="Converted Measurement" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="45" Margin="173,63,0,0" VerticalAlignment="Top" Width="202">
+        <Grid x:Name="currentGrid" HorizontalAlignment="Left" Height="45" Margin="173,63,0,0" VerticalAlignment="Top" Width="202">
             <TextBlock x:Name="mostRecentMeasure" HorizontalAlignment="Left" Margin="0,25,0,0" Text="{Binding MostRecentMeasure}" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBlock x:Name="unitsUsedTextBlock" HorizontalAlignment="Left" Margin="100,25,0,0" Text="{Binding UnitsUsed}" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <TextBlock x:Name="recentMeasureLabel" HorizontalAlignment="Left" Text="Current Measurement" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Normal"/>
